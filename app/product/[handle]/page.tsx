@@ -1,0 +1,109 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
+import { Gallery } from 'components/product/gallery';
+import { ProductProvider } from 'components/product/product-context';
+import { ProductDescription } from 'components/product/product-description';
+import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
+import { getLocalizedShopifyApi } from 'lib/shopify/server-localized-api';
+import { Image } from 'lib/shopify/types';
+import { Suspense } from 'react';
+
+export async function generateMetadata(props: {
+  params: Promise<{ handle: string }>;
+}): Promise<Metadata> {
+  const params = await props.params;
+  const shopify = await getLocalizedShopifyApi();
+  const product = await shopify.getProduct(params.handle);
+
+  if (!product) return notFound();
+
+  const { url, width, height, altText: alt } = product.featuredImage || {};
+  const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
+
+  return {
+    title: product.seo.title || product.title,
+    description: product.seo.description || product.description,
+    robots: {
+      index: indexable,
+      follow: indexable,
+      googleBot: {
+        index: indexable,
+        follow: indexable
+      }
+    },
+    openGraph: url
+      ? {
+          images: [
+            {
+              url,
+              width,
+              height,
+              alt
+            }
+          ]
+        }
+      : null
+  };
+}
+
+export default async function ProductPage(props: { params: Promise<{ handle: string }> }) {
+  const params = await props.params;
+  const shopify = await getLocalizedShopifyApi();
+  const product = await shopify.getProduct(params.handle);
+
+  if (!product) return notFound();
+
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.description,
+    image: product.featuredImage.url,
+    offers: {
+      '@type': 'AggregateOffer',
+      availability: product.availableForSale
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+      priceCurrency: product.priceRange.minVariantPrice.currencyCode,
+      highPrice: product.priceRange.maxVariantPrice.amount,
+      lowPrice: product.priceRange.minVariantPrice.amount
+    }
+  };
+
+  return (
+    <ProductProvider>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productJsonLd)
+        }}
+      />
+      <div>
+        <div className="flex flex-col dt:flex-row relative">
+          <div className="dt:h-screen w-full dt:sticky dt:top-0">
+            <Suspense
+              fallback={
+                <div className="relative aspect-square h-full w-full overflow-hidden" />
+              }
+            >
+              <Gallery
+                images={product.images.slice(0, 5).map((image: Image) => ({
+                  src: image.url,
+                  altText: image.altText
+                }))}
+              />
+            </Suspense>
+          </div>
+
+          <div className="w-full ">
+            <Suspense fallback={null}>
+              <ProductDescription product={product} />
+            </Suspense>
+          </div>
+        </div>
+      </div>
+      
+    </ProductProvider>
+  );
+}

@@ -1,0 +1,193 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-black: #010101;
+  --color-white: #ffffff;
+  --breakpoint-dt: 769px;
+  --breakpoint-dtt: 960px;
+  --breakpoint-dttt: 1248px;
+  --breakpoint-dtttt: 1280px;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-size: 2.56vw;
+}
+
+body {
+  font-family: "ABC Social Cyrillic Condensed", "Arial Narrow", sans-serif;
+  font-weight: 500;
+  color: var(--color-black);
+  background-color: var(--color-white);
+}
+
+input,
+textarea,
+select,
+button {
+  all: unset;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+.cursor-arrow-left {
+  cursor:
+    url("https://cdn.shopify.com/s/files/1/0684/3439/5302/files/arrow-left.png?v=1772204064")
+      93 93,
+    auto;
+}
+
+.cursor-arrow-right {
+  cursor:
+    url("https://cdn.shopify.com/s/files/1/0684/3439/5302/files/arrow-right.png?v=1772204064")
+      93 93,
+    auto;
+}
+
+.prose {
+  white-space: break-spaces;
+}
+
+.arial {
+  font-family: "Arial Narrow", sans-serif;
+  font-weight: 700;
+}
+
+@media screen and (min-width: 769px) {
+  html {
+    font-size: 10px;
+  }
+  body {
+    font-size: 1.8rem;
+    line-height: 108%;
+    letter-spacing: 0.045em;
+    font-weight: 700;
+  }
+}
+
+.transparent-shadow {
+  /* background: #FFFFFF; */
+  mix-blend-mode: multiply;
+  box-shadow:
+    inset 1px 1px 4px #ffffff,
+    inset -1px -1px 4px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease-in-out;
+}
+
+.transparent-shadow:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.transparent-shadow.active,
+.pressed-shadow {
+  /* background: #f6f6f6; */
+  transform: translateY(1px);
+  box-shadow:
+    inset -1px -1px 2px #fff,
+    inset 1px 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.underline {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25rem;
+}
+
+.grid.grid-cols-2 .buttonPrice {
+  display: none !important;
+}
+
+#stockists-page-body h3,
+#stockists-page-body a {
+  margin-bottom: 1.9rem;
+}
+
+#stockists-page-body a {
+  text-decoration: underline;
+  margin-bottom: 1.9rem;
+  display: block;
+}
+
+#stockists-page-body a:hover {
+  text-decoration: none;
+}
+
+#stockists-page-body h3 {
+  margin-top: 3.9rem;
+}
+
+#stockists-page-body h3:first-child {
+  margin-top: 0;
+}
+
+#terms h1,
+#terms h2,
+#terms h3 {
+  font-weight: 700;
+  margin-top: 3.2rem;
+  margin-bottom: 1.6rem;
+}
+
+#terms h1:first-child,
+#terms h2:first-child,
+#terms h3:first-child {
+  margin-top: 0;
+}
+
+#terms,
+#terms p,
+#terms li,
+#terms div {
+  font-weight: 500;
+
+  white-space: normal;
+}
+
+#terms strong,
+#terms b {
+  font-weight: 700 !important;
+}
+
+#terms p {
+  margin-bottom: 1.6rem;
+}
+
+#terms ul {
+  list-style-type: disc;
+  padding-left: 2rem;
+  margin-bottom: 1.6rem;
+  white-space: normal;
+}
+
+#terms ul li {
+  margin-bottom: 0;
+  padding: 0;
+  white-space: normal;
+}
+
+#terms ol {
+  list-style-type: decimal;
+  padding-left: 2rem;
+  margin-bottom: 1.6rem;
+  white-space: normal;
+}
+
+#terms ol li {
+  margin-bottom: 0;
+  padding: 0;
+  white-space: normal;
+}
+
+#terms a {
+  text-decoration: underline;
+}
+
+#terms a:hover {
+  text-decoration: none;
+}
